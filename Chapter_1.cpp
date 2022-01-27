@@ -2,6 +2,8 @@
 #include"Sales_item.h"
 using namespace std;
 
+//文件输入终止符：在windows系统中是ctrl+z
+
 int main()
 {
 	//1.5.1节练习1.22
