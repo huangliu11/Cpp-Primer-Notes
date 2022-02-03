@@ -1,5 +1,7 @@
 #include<iostream>
+#include"Sales_data.h"
 using namespace std;
+//struct Foo {};
 
 int main() {
 	/*2.1.2节练习2.4*/
@@ -42,7 +44,7 @@ int main() {
 	cout << j << endl;
 
 	/*2.4.4节练习2.32*/
-	int null = 0, * p = null;	//错误，不能将int型赋值给int型指针
+	//int null = 0, * p = null;	//错误，不能将int型赋值给int型指针
 	constexpr int null = 0;	//正确，此时null为常量表达式
 	const int null = 0;		//正确，此时null为常量，0表示将p指针初始化为空；如果是0以外的常量则不可以
 	int *p = null;
@@ -69,10 +71,10 @@ int main() {
 	cout << "c before:" << c << endl;
 	c = 42;
 	cout << "c after" << c << endl;
-	错误
-	d = 42;
-	e = 42;
-	g = 42;
+	//错误
+	//d = 42;
+	//e = 42;
+	//g = 42;
 
 	/*练习2.35*/
 	const int i = 42;
@@ -91,7 +93,89 @@ int main() {
 	cout << "after *p" << *p << endl;
 	//k2 = j2;	//错误
 
+	/*2.6.1节练习2.40*/
 
+	/*2.6.2节练习2.41*/
+	/*1.21*/
+	Sales_data data1, data2;
+	double price = 0.0;
+	cin >> data1.bookNo >> data1.units_sold >> price;
+	data1.revenue = data1.units_sold * price;
+	cin >> data2.bookNo >> data2.units_sold >> price;
+	data2.revenue = data2.units_sold * price;
 
+	if (data1.bookNo == data2.bookNo) {
+		unsigned totalCnt = data1.units_sold + data2.units_sold;
+		double totalRevenue = data1.revenue + data2.revenue;
+		cout << data1.bookNo << " " << totalCnt
+			<< " " << totalRevenue << " ";
+		if (totalCnt != 0)
+			cout << totalRevenue / totalCnt << endl;
+	}
+	else {
+		cerr << "not the same ISBN" << endl;
+		return -1;
+	}
+	/*1.22*/
+	Sales_data currData, total;
+	while (cin >> currData.bookNo) {
+		double price;
+		cin >> currData.units_sold >> price;
+		currData.revenue = currData.units_sold * price;
+		total.bookNo = currData.bookNo;
+		total.units_sold += currData.units_sold;
+		total.revenue += currData.revenue;
+	}
+	cout << total.bookNo << " " << total.units_sold << " " << total.revenue << endl;
+	
+	/*1.24*/
+	Sales_data currData, data;
+	while (cin >> currData.bookNo) {
+		double price;
+		cin >> currData.units_sold >> price;
+		int cnt = 1;
+		while (cin >> data.bookNo) {
+			cin >> data.units_sold >> price;
+			if (currData.bookNo == data.bookNo) {
+				++cnt;
+			}
+			else {
+				cout << currData.bookNo << " " << cnt << endl;
+				cnt = 1;
+				currData.bookNo = data.bookNo;
+			}
+		}
+		cout << currData.bookNo << " " << cnt << endl;
+	}
+
+	/*1.25*/
+	Sales_data total;
+	if (cin >> total.bookNo) {
+		double price;
+		cin >> total.units_sold >> price;
+		total.revenue = total.units_sold * price;
+		Sales_data trans;
+		while (cin >> trans.bookNo) {
+			cin >> trans.units_sold >> price;
+			trans.revenue = trans.units_sold * price;
+			if (total.bookNo == trans.bookNo) {
+				total.units_sold += trans.units_sold;
+				total.revenue += trans.revenue;
+			}
+			else {
+				cout << total.bookNo << " " << total.units_sold
+					<< " " << total.revenue << " "
+					<< total.revenue / total.units_sold << endl;
+
+				total.bookNo = trans.bookNo;
+				total.units_sold = trans.units_sold;
+				total.revenue = trans.revenue;
+			}
+		}
+		cout << total.bookNo << " " << total.units_sold
+			<< " " << total.revenue << " "
+			<< total.revenue / total.units_sold << endl;
+	}
+	
 	return 0;	
 }
